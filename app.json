@@ -1,10 +1,15 @@
 {
   "expo": {
-    "sdkVersion": "14.0.0",
+    "name": "RNWeather",
+    "sdkVersion": "15.0.0",
     "packagerOpts": {
       "assetExts": [
         "ttf"
       ]
+    },
+    "slug": "rn-weather-app",
+    "ios": {
+      "bundleIdentifier": "co.randompaper.rn-weather-app"
     }
   }
 }

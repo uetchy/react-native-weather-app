@@ -1,10 +1,22 @@
 import React, {Component} from 'react';
-import { StyleSheet, ListView, Text, TextInput, View, Button, TouchableHighlight} from 'react-native';
+import {
+  StyleSheet,
+  ListView,
+  Text,
+  TextInput,
+  View,
+  Button,
+  TouchableHighlight,
+  ActivityIndicator
+} from 'react-native';
 import {StackNavigator} from 'react-navigation';
+import {Ionicons} from '@expo/vector-icons';
+
+const OSM_API_EKY = process.env.OSM_API_KEY;
 
 class MainScreen extends Component {
   static navigationOptions = {
-    title: 'Welcome'
+    title: 'Today'
   }
 
   constructor (props) {
@@ -14,27 +26,27 @@ class MainScreen extends Component {
     });
     this.state = {
       dataSource: ds.cloneWithRows([
-        'John',
-        'Joel',
-        'James',
-        'Jimmy',
-        'Jackson',
-        'Jillian',
-        'Julie',
-        'Devin'
+        'Tokyo',
+        'California',
+        'Jakarta',
+        'Melbourne',
+        'Miami',
+        'Barcelona',
+        'Paris',
+        'London'
       ])
     };
   }
   render () {
     const {navigate} = this.props.navigation;
     return (
-      <View>
+      <View style={{flex: 1}}>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionID, rowID, highlightRow) => {
             return (
               <TouchableHighlight onPress={() => {
-                  navigate('Profile', {name: rowData});
+                  navigate('Detail', {name: rowData});
                   highlightRow(sectionID, rowID);
                 }}>
                 <View>
@@ -53,29 +65,82 @@ class MainScreen extends Component {
   }
 }
 
-class ProfileScreen extends Component {
+class DetailScreen extends Component {
   static navigationOptions = {
-    title: ({state}) => `${state.params.name}'s Profile`,
-    header: ({ state, setParams }) => ({
-      // Render a button on the right side of the header
-      // When pressed switches the screen to edit mode.
-      right: (
-        <Button
-          title={state.params.editing ? 'Done' : 'Edit'}
-          onPress={() => setParams({editing: !state.params.editing})}
-        />
-      )
-    })
+    title: ({state}) => state.params.name
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      weather: ''
+    }
+  }
+
+  async _getForecast(location) {
+    try {
+      const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${OSM_API_KEY}`)
+      const json = await response.json()
+      console.log(json);
+      return json['weather'][0];
+    } catch(err) {
+      return false;
+    }
+  }
+
+  async componentDidMount() {
+    const location = this.props.navigation.state.params.name;
+    try {
+      const forecast = await this._getForecast(location);
+      this.setState({weather: forecast});
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render () {
     const {state} = this.props.navigation;
+    const weatherThemeMap = {
+      'Drizzle': ['ios-rainy', 'blue'],
+      'Rain': ['ios-rainy', 'blue'],
+      'Clouds': ['ios-cloudy', 'gray'],
+      'Haze': ['ios-cloudy', 'gray'],
+      'Clear': ['ios-sunny', 'orange'],
+    }
+    const weather = (this.state.weather) ?
+      (<View style={{flex: 0, flexDirection: 'column', alignItems: 'center'}}>
+        <Ionicons name={weatherThemeMap[this.state.weather['main']][0]} size={256} color='white' />
+        <Text style={{
+          fontSize: 60,
+          fontWeight: '900',
+          color: 'white',
+        }}>{state.params.name}</Text>
+        <Text style={{
+          fontSize: 60,
+          fontWeight: '100',
+          color: 'white',
+        }}>{this.state.weather['main']}</Text>
+        <Text style={{
+          fontSize: 10,
+          fontWeight: 'normal',
+          color: 'white',
+          paddingTop: 10,
+        }}>{this.state.weather['description'].toUpperCase()}</Text>
+      </View>) :
+      (<ActivityIndicator
+        animating={this.state.animating}
+        style={[styles.centering, {height: 80}]}
+        size="large" />
+      );
     return (
-      <View>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          value={state.params.name}
-          editable={!!state.params.editing} />
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: this.state.weather ? weatherThemeMap[this.state.weather['main']][1] : 'white',
+      }}>
+        {weather}
       </View>
     );
   }
@@ -85,8 +150,8 @@ const App = StackNavigator({
   Main: {
     screen: MainScreen
   },
-  Profile: {
-    screen: ProfileScreen
+  Detail: {
+    screen: DetailScreen
   }
 });
 
@@ -100,7 +165,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 10,
+    padding: 15,
     backgroundColor: '#F6F6F6',
   },
   thumb: {
@@ -109,6 +174,7 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
+    fontSize: 20,
   }
 });
 
