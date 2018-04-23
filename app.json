@@ -3,9 +3,7 @@
     "name": "RNWeather",
     "sdkVersion": "15.0.0",
     "packagerOpts": {
-      "assetExts": [
-        "ttf"
-      ]
+      "assetExts": ["ttf"]
     },
     "slug": "rn-weather-app",
     "ios": {

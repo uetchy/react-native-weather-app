@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
+    "jest-expo": "^26.0.0",
     "react-native-scripts": "0.0.26",
-    "jest-expo": "^0.3.0",
     "react-test-renderer": "~15.4.1"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
@@ -19,8 +19,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/vector-icons": "^4.0.0",
-    "expo": "^15.1.0",
+    "@expo/vector-icons": "^6.3.1",
+    "expo": "^26.0.0",
     "react": "~15.4.0",
     "react-native": "0.42.3",
     "react-navigation": "^1.0.0-beta.7"
