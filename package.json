@@ -1,29 +1,29 @@
 {
   "name": "react-native-weather-app",
+  "description": "React Native Weather App",
   "version": "1.0.0",
-  "private": true,
-  "devDependencies": {
-    "jest-expo": "^26.0.0",
-    "react-native-scripts": "0.0.26",
-    "react-test-renderer": "~15.4.1"
-  },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "android": "expo start -- android",
+    "eject": "expo eject",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@expo/samples": "2.1.1",
+    "expo": "^32.0.0",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-navigation": "^3.0.9"
+  },
+  "devDependencies": {
+    "babel-preset-expo": "^5.0.0",
+    "jest-expo": "^32.0.0"
   },
   "jest": {
     "preset": "jest-expo"
   },
-  "dependencies": {
-    "@expo/vector-icons": "^6.3.1",
-    "expo": "^26.0.0",
-    "react": "~15.4.0",
-    "react-native": "0.42.3",
-    "react-navigation": "^1.0.0-beta.7"
-  },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }
