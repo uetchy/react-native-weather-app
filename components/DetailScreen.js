@@ -10,12 +10,14 @@ export class DetailScreen extends React.Component {
       title: navigation.getParam('name', 'TitleA'),
     }
   }
+
   constructor(props) {
     super(props)
     this.state = {
       weather: '',
     }
   }
+
   async _getForecast(location) {
     try {
       const response = await fetch(
@@ -28,6 +30,7 @@ export class DetailScreen extends React.Component {
       return false
     }
   }
+
   async componentDidMount() {
     const location = this.props.navigation.state.params.name
     try {
@@ -37,6 +40,7 @@ export class DetailScreen extends React.Component {
       console.error(err)
     }
   }
+
   render() {
     const { state } = this.props.navigation
     const weatherThemeMap = {

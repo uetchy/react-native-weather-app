@@ -11,6 +11,7 @@ export class MainScreen extends React.Component {
   static navigationOptions = {
     title: 'Today',
   }
+
   constructor(props) {
     super(props)
     const ds = new ListView.DataSource({
@@ -29,6 +30,7 @@ export class MainScreen extends React.Component {
       ]),
     }
   }
+
   render() {
     const { navigate } = this.props.navigation
     return (
