@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ActivityIndicator, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import styled from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
 
 const OSM_API_KEY = Constants.manifest.extra.osmKey;
 
@@ -14,9 +14,12 @@ const weatherThemeMap = {
   Clear: ['ios-sunny', 'orange'],
 };
 
-export default function DetailScreen({ navigation, route }) {
+export default function DetailScreen({
+  route: {
+    params: { name },
+  },
+}) {
   const [weather, setWeather] = useState('');
-  const { name } = route.params;
 
   async function getForecast(location) {
     try {
@@ -32,9 +35,8 @@ export default function DetailScreen({ navigation, route }) {
 
   useEffect(() => {
     const fn = async () => {
-      const location = name;
       try {
-        const forecast = await getForecast(location);
+        const forecast = await getForecast(name);
         setWeather(forecast);
       } catch (err) {
         console.error(err);
@@ -43,18 +45,20 @@ export default function DetailScreen({ navigation, route }) {
     fn();
   }, []);
 
-  const weatherComponent = weather ? (
-    <WeatherComponent>
-      <Ionicons name={weatherThemeMap[weather['main']][0]} size={256} color='white' />
-      <Name>{name}</Name>
-      <Condition>{weather['main']}</Condition>
-      <Summary>{weather['description'].toUpperCase()}</Summary>
-    </WeatherComponent>
-  ) : (
-    <ActivityIndicator style={{ height: 80 }} size='large' />
+  return (
+    <Container weather={weather}>
+      {weather ? (
+        <WeatherComponent>
+          <Ionicons name={weatherThemeMap[weather['main']][0]} size={256} color='white' />
+          <Name>{name}</Name>
+          <Condition>{weather['main']}</Condition>
+          <Summary>{weather['description'].toUpperCase()}</Summary>
+        </WeatherComponent>
+      ) : (
+        <ActivityIndicator style={{ height: 80 }} size='large' />
+      )}
+    </Container>
   );
-
-  return <Container weather={weather}>{weatherComponent}</Container>;
 }
 
 const Container = styled.View`

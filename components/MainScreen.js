@@ -1,50 +1,51 @@
 import React from 'react';
-import { FlatList, Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import { FlatList, TouchableHighlight } from 'react-native';
+import styled from 'styled-components/native';
 
-export default function MainScreen({ navigation }) {
+const cities = [
+  { title: 'Tokyo', key: 'tokyo' },
+  { title: 'California', key: 'california' },
+  { title: 'Jakarta', key: 'jakarta' },
+  { title: 'Melbourne', key: 'melbourne' },
+  { title: 'Miami', key: 'miami' },
+  { title: 'Barcelona', key: 'barcelona' },
+  { title: 'Paris', key: 'paris' },
+  { title: 'London', key: 'london' },
+];
+
+export default function MainScreen({ navigation: { navigate } }) {
+  function handlePress(name) {
+    navigate('Detail', { name });
+  }
+
   return (
-    <View style={styles.container}>
+    <Container>
       <FlatList
-        data={[
-          { title: 'Tokyo', key: 'tokyo' },
-          { title: 'California', key: 'california' },
-          { title: 'Jakarta', key: 'jakarta' },
-          { title: 'Melbourne', key: 'melbourne' },
-          { title: 'Miami', key: 'miami' },
-          { title: 'Barcelona', key: 'barcelona' },
-          { title: 'Paris', key: 'paris' },
-          { title: 'London', key: 'london' },
-        ]}
-        renderItem={({ item }) => (
-          <TouchableHighlight
-            key={item.title}
-            onPress={() => {
-              navigation.navigate('Detail', { name: item.title });
-            }}>
-            <View>
-              <View style={styles.row}>
-                <Text style={styles.text}>{item.title}</Text>
-              </View>
-            </View>
+        data={cities}
+        renderItem={({ item: { title } }) => (
+          <TouchableHighlight key={title} onPress={() => handlePress(title)}>
+            <ListCell>
+              <ListText>{title}</ListText>
+            </ListCell>
           </TouchableHighlight>
         )}
       />
-    </View>
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 15,
-    backgroundColor: '#F6F6F6',
-  },
-  text: {
-    flex: 1,
-    fontSize: 20,
-  },
-});
+const Container = styled.View`
+  flex: 1;
+`;
+
+const ListCell = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  padding: 15px;
+  background-color: #f6f6f6;
+`;
+
+const ListText = styled.Text`
+  flex: 1;
+  font-size: 20px;
+`;
