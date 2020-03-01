@@ -1,15 +1,20 @@
-import { createAppContainer, createStackNavigator } from 'react-navigation'
-import { DetailScreen } from './components/DetailScreen'
-import { MainScreen } from './components/MainScreen'
+import 'react-native-gesture-handler';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import DetailScreen from './components/DetailScreen';
+import MainScreen from './components/MainScreen';
 
-const AppNavigator = createStackNavigator(
-  {
-    Main: MainScreen,
-    Detail: DetailScreen,
-  },
-  {
-    initialRouteName: 'Main',
-  }
-)
+const Stack = createStackNavigator();
 
-export default createAppContainer(AppNavigator)
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Main' component={MainScreen} />
+        <Stack.Screen name='Detail' component={DetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}

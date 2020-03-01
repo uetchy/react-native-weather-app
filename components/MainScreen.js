@@ -1,61 +1,36 @@
-import React from 'react'
-import {
-  ListView,
-  Text,
-  View,
-  TouchableHighlight,
-  StyleSheet,
-} from 'react-native'
+import React from 'react';
+import { FlatList, Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 
-export class MainScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Today',
-  }
-
-  constructor(props) {
-    super(props)
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    })
-    this.state = {
-      dataSource: ds.cloneWithRows([
-        'Tokyo',
-        'California',
-        'Jakarta',
-        'Melbourne',
-        'Miami',
-        'Barcelona',
-        'Paris',
-        'London',
-      ]),
-    }
-  }
-
-  render() {
-    const { navigate } = this.props.navigation
-    return (
-      <View style={styles.container}>
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData, sectionID, rowID, highlightRow) => {
-            return (
-              <TouchableHighlight
-                onPress={() => {
-                  navigate('Detail', { name: rowData })
-                  highlightRow(sectionID, rowID)
-                }}>
-                <View>
-                  <View style={styles.row}>
-                    <Text style={styles.text}>{rowData}</Text>
-                  </View>
-                </View>
-              </TouchableHighlight>
-            )
-          }}
-        />
-      </View>
-    )
-  }
+export default function MainScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={[
+          { title: 'Tokyo', key: 'tokyo' },
+          { title: 'California', key: 'california' },
+          { title: 'Jakarta', key: 'jakarta' },
+          { title: 'Melbourne', key: 'melbourne' },
+          { title: 'Miami', key: 'miami' },
+          { title: 'Barcelona', key: 'barcelona' },
+          { title: 'Paris', key: 'paris' },
+          { title: 'London', key: 'london' },
+        ]}
+        renderItem={({ item }) => (
+          <TouchableHighlight
+            key={item.title}
+            onPress={() => {
+              navigation.navigate('Detail', { name: item.title });
+            }}>
+            <View>
+              <View style={styles.row}>
+                <Text style={styles.text}>{item.title}</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        )}
+      />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -72,4 +47,4 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
   },
-})
+});

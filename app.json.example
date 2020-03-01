@@ -1,16 +1,13 @@
 {
   "expo": {
     "name": "Weather",
-    "privacy": "public",
-    "sdkVersion": "32.0.0",
-    "packagerOpts": {
-      "assetExts": ["ttf"]
-    },
     "slug": "react-native-weather-app",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": ["ios"],
     "ios": {
       "supportsTablet": true
     },
-    "platforms": ["ios"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -22,6 +19,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"]
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    },
+    "assetBundlePatterns": ["**/*"],
+    "extra": {
+      "osmKey": "<OpenWeatherMap API Key>"
+    }
   }
 }
